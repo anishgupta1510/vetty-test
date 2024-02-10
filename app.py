@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import os
+import chardet
 
 app = Flask(__name__)
 
@@ -12,7 +13,12 @@ def display_file():
 
     try:
         file_path = os.path.join('files', file_name)
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, 'rb') as f:
+            raw_data = f.read()
+            encoding_result = chardet.detect(raw_data)
+            encoding = encoding_result['encoding']
+
+        with open(file_path, 'r', encoding=encoding) as f:
             lines = f.readlines()
 
             if start_line and end_line:
@@ -28,4 +34,3 @@ def display_file():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
