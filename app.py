@@ -5,7 +5,7 @@ import chardet
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def display_file():
     file_name = request.args.get('file', 'file1.txt')
     start_line = request.args.get('start_line')
